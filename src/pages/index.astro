@@ -1,12 +1,35 @@
 ---
 import Base from '../layouts/Base.astro';
+import Hero from '../components/sections/Hero.astro';
+import Stats from '../components/sections/Stats.astro';
+import Alzheimer from '../components/sections/Alzheimer.astro';
+import PourquoiBCD from '../components/sections/PourquoiBCD.astro';
+import HowItWorks from '../components/sections/HowItWorks.astro';
+import Validation from '../components/sections/Validation.astro';
+import Offre from '../components/sections/Offre.astro';
+import Team from '../components/sections/Team.astro';
+import Contact from '../components/sections/Contact.astro';
 ---
 
 <Base
   title="Brainvix – BCD | Test digital validé pour le repérage des troubles cognitifs"
   description="Le BCD est le premier test digital validé scientifiquement pour le repérage des troubles cognitifs. Simple, fiable, 97% de sensibilité. Développé par le Pr Bruno Dubois."
 >
-  <div class="pt-24 text-center py-32">
-    <h1 class="text-4xl font-bold text-navy">Site en construction</h1>
-  </div>
+  <Hero />
+  <Stats />
+  <Alzheimer />
+  <PourquoiBCD />
+  <HowItWorks />
+  <Validation />
+  <Offre />
+  <Team />
+  <Contact />
 </Base>
+
+<script>
+  import { initCounters, initFadeIn } from '../utils/counter';
+  document.addEventListener('DOMContentLoaded', () => {
+    initCounters();
+    initFadeIn();
+  });
+</script>

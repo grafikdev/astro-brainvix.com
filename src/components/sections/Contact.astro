@@ -1,0 +1,137 @@
+---
+const apiUrl = import.meta.env.PUBLIC_CONTACT_API_URL;
+const isProd = !!apiUrl;
+---
+
+<section id="contact" class="py-24 bg-navy text-white">
+  <div class="section-container max-w-2xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 fade-in">Demander une démo</h2>
+    <p class="text-center opacity-80 mb-12 fade-in">
+      Contactez-nous pour découvrir comment le BCD peut s'intégrer à votre offre.
+    </p>
+
+    {isProd ? (
+      <form id="contact-form" class="space-y-6 fade-in" novalidate>
+        <div>
+          <label for="name" class="block text-sm font-semibold mb-2">Nom *</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            class="w-full bg-white/10 border border-white/30 rounded px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-white"
+            placeholder="Votre nom"
+          />
+          <p id="name-error" class="text-red-300 text-sm mt-1 hidden"></p>
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-semibold mb-2">Email *</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            class="w-full bg-white/10 border border-white/30 rounded px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-white"
+            placeholder="votre@email.com"
+          />
+          <p id="email-error" class="text-red-300 text-sm mt-1 hidden"></p>
+        </div>
+        <div>
+          <label for="message" class="block text-sm font-semibold mb-2">Message *</label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            rows="5"
+            class="w-full bg-white/10 border border-white/30 rounded px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-white resize-none"
+            placeholder="Décrivez votre besoin..."
+          ></textarea>
+          <p id="message-error" class="text-red-300 text-sm mt-1 hidden"></p>
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-blue text-white py-4 font-bold text-lg hover:opacity-90 transition-opacity rounded disabled:opacity-50"
+        >
+          Envoyer
+        </button>
+        <p id="form-success" class="hidden text-green-300 text-center font-semibold">
+          ✓ Message envoyé ! Nous vous répondrons rapidement.
+        </p>
+        <p id="form-error-global" class="hidden text-red-300 text-center">
+          Une erreur est survenue. Veuillez réessayer ou nous contacter par email.
+        </p>
+      </form>
+    ) : (
+      <div class="text-center py-12 border border-white/20 rounded-xl fade-in">
+        <p class="opacity-60 mb-2">Formulaire disponible en production.</p>
+        <p class="text-sm opacity-40">Configurez PUBLIC_CONTACT_API_URL pour activer.</p>
+      </div>
+    )}
+  </div>
+</section>
+
+{isProd && (
+  <script>
+    import { validateContactForm } from '../../utils/contact-form.ts';
+
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nameInput = document.getElementById('name') as HTMLInputElement;
+      const emailInput = document.getElementById('email') as HTMLInputElement;
+      const messageInput = document.getElementById('message') as HTMLTextAreaElement;
+
+      const data = {
+        name: nameInput.value,
+        email: emailInput.value,
+        message: messageInput.value,
+      };
+
+      const { valid, errors } = validateContactForm(data);
+
+      // Clear errors
+      ['name', 'email', 'message'].forEach((field) => {
+        const errEl = document.getElementById(`${field}-error`);
+        if (errEl) { errEl.textContent = ''; errEl.classList.add('hidden'); }
+      });
+
+      if (!valid) {
+        Object.entries(errors).forEach(([field, msg]) => {
+          const errEl = document.getElementById(`${field}-error`);
+          if (errEl) { errEl.textContent = msg as string; errEl.classList.remove('hidden'); }
+        });
+        return;
+      }
+
+      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours...';
+
+      const apiUrl = import.meta.env.PUBLIC_CONTACT_API_URL;
+
+      try {
+        const res = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (res.ok) {
+          form.reset();
+          const successEl = document.getElementById('form-success');
+          if (successEl) successEl.classList.remove('hidden');
+        } else {
+          const errEl = document.getElementById('form-error-global');
+          if (errEl) errEl.classList.remove('hidden');
+        }
+      } catch {
+        const errEl = document.getElementById('form-error-global');
+        if (errEl) errEl.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Envoyer';
+      }
+    });
+  </script>
+)}
