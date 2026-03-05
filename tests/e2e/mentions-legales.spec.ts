@@ -10,7 +10,8 @@ test.describe('Page Mentions Légales', () => {
   });
 
   test('affiche un H1', async ({ page }) => {
-    await expect(page.locator('h1')).toBeVisible();
+    // Cibler le H1 dans le contenu principal de la page
+    await expect(page.locator('main h1').first()).toBeVisible();
   });
 
   test('contient les mentions légales obligatoires', async ({ page }) => {
