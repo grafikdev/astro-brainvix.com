@@ -72,7 +72,7 @@ const isProd = !!apiUrl;
 
 {isProd && (
   <script>
-    import { validateContactForm } from '../../utils/contact-form.ts';
+    import { validateContactForm } from '../../utils/contact-form';
 
     const form = document.getElementById('contact-form') as HTMLFormElement | null;
 
