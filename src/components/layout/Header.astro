@@ -1,0 +1,61 @@
+---
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+  <div class="section-container flex items-center justify-between py-4">
+    <a href="/" id="logo" aria-label="Brainvix - BCD, retour à l'accueil">
+      <img
+        src="/assets/images/BCD-logosite.jpg"
+        alt="Brainvix - BCD"
+        width="160"
+        height="87"
+        class="h-10 w-auto"
+      />
+    </a>
+    <nav aria-label="Menu principal">
+      <ul class="hidden md:flex gap-8 list-none items-center">
+        <li><a href="#alzheimer" class="text-navy hover:text-blue transition-colors font-semibold text-sm">Le BCD</a></li>
+        <li><a href="#steps" class="text-navy hover:text-blue transition-colors font-semibold text-sm">Comment ça marche</a></li>
+        <li><a href="#offre" class="text-navy hover:text-blue transition-colors font-semibold text-sm">Offre</a></li>
+        <li><a href="#team" class="text-navy hover:text-blue transition-colors font-semibold text-sm">Équipe</a></li>
+        <li>
+          <a
+            href="#contact"
+            class="bg-blue text-white px-6 py-2 rounded font-semibold text-sm hover:opacity-90 transition-opacity"
+          >
+            Demander une démo
+          </a>
+        </li>
+      </ul>
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden p-2"
+        aria-label="Ouvrir le menu"
+        aria-expanded="false"
+      >
+        <span class="block w-6 h-0.5 bg-navy mb-1.5"></span>
+        <span class="block w-6 h-0.5 bg-navy mb-1.5"></span>
+        <span class="block w-6 h-0.5 bg-navy"></span>
+      </button>
+    </nav>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
+    <ul class="section-container py-4 flex flex-col gap-4 list-none">
+      <li><a href="#alzheimer" class="text-navy font-semibold">Le BCD</a></li>
+      <li><a href="#steps" class="text-navy font-semibold">Comment ça marche</a></li>
+      <li><a href="#offre" class="text-navy font-semibold">Offre</a></li>
+      <li><a href="#team" class="text-navy font-semibold">Équipe</a></li>
+      <li><a href="#contact" class="text-blue font-bold">Demander une démo</a></li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', String(!isOpen));
+  });
+</script>
